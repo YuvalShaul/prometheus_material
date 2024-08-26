@@ -1,0 +1,31 @@
+# Global configurations applied to all scrape jobs
+global:
+  scrape_interval: 15s  # Default interval between scrapes
+  evaluation_interval: 15s  # Default interval between rule evaluations
+
+
+# Rule files for alerting (not included in this example)
+rule_files:
+  # - "alert.rules"
+
+# Scrape configurations: define the targets to scrape
+scrape_configs:
+  # Scrape configuration for the Node Exporter
+  - job_name: "node_exporter"
+    scrape_interval: 15s  # Override the global interval (optional)
+    static_configs:
+      - targets: ["localhost:9100"]  # The Node Exporter on the local machine
+
+  # Scrape configuration for another service
+  # - job_name: "my_service"
+  #   scrape_interval: 30s  # Different scrape interval for this job
+  #   static_configs:
+  #     - targets: ["192.168.1.100:8080"]  # Another service running on a remote host
+
+# Alertmanager configuration (not included in this simple example)
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets:
+#             - "localhost:9093"
+
