@@ -5,7 +5,8 @@ You can run prometheus using docker, like this:
 docker run -d  \
  --name prometheus \
  --network host  \
- -v /home/osboxes/Documents/prometheus_material/prometheus.yml:/etc/prometheus/prometheus.yml \  prom/prometheus
+ -v /home/osboxes/Documents/prometheus_material/prometheus.yml:/etc/prometheus/prometheus.yml  \
+ prom/prometheus
 ```
 It means:
 - run a container called **prometheus**
