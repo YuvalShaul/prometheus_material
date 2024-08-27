@@ -29,3 +29,15 @@ docker run -d \
   quay.io/prometheus/node-exporter:latest \
   --path.rootfs=/host
 ```
+
+
+## Try out quesries
+
+Try the following queries:
+- node_cpu_seconds_total
+- node_cpu_seconds_total{mode="idle"}
+- node_cpu_seconds_total{mode="idle", cpu="1"}
+- node_cpu_seconds_total{mode="idle", cpu="1"}[2m]
+- rate(node_cpu_seconds_total{mode="idle", cpu="1"}[2m])
+- rate(node_cpu_seconds_total{mode="idle"}[2m])
+- avg(rate(node_cpu_seconds_total{mode="idle"}[2m]))
