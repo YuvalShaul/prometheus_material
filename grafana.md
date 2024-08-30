@@ -28,5 +28,7 @@ You should get a seccessful resutl
 
 ## Create a new Dashboard
 
-- 
+- Locate **Dashboards** on the menu, and click
+- Click on **Create dashboard**
+
 
