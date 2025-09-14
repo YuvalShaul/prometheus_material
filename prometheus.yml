@@ -16,11 +16,11 @@ scrape_configs:
     static_configs:
       - targets: ["localhost:9100"]  # The Node Exporter on the local machine
 
-  # Scrape configuration for another service
-  # - job_name: "my_service"
-  #   scrape_interval: 30s  # Different scrape interval for this job
-  #   static_configs:
-  #     - targets: ["192.168.1.100:8080"]  # Another service running on a remote host
+  - job_name: 'orders'
+    static_configs:
+      - targets: ['localhost:8080']  # Your API address
+    metrics_path: '/metrics'
+    scrape_interval: 10s
 
 # Alertmanager configuration (not included in this simple example)
 # alerting:
