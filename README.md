@@ -1,17 +1,19 @@
 ## How to run
-
-You can run prometheus using docker, like this:
+- Assuming you have cloned this git repository:  
+  - Prometheus needs a config file (prometheus.yml from this directory)
+  - You can run prometheus using docker, like this:  
+(remember to change the directory name)
 ```
 docker run -d  \
  --name prometheus \
  --network host  \
- -v /home/osboxes/Documents/prometheus_material/prometheus.yml:/etc/prometheus/prometheus.yml  \
+ -v /home/yuval/Documents/prometheus_material/prometheus.yml:/etc/prometheus/prometheus.yml  \
  prom/prometheus
 ```
-It means:
-- run a container called **prometheus**
-- We'll be using the host network, so we can connect to the node_exporter (that we'll run next)
-- map the directory you created **prometheus.yml** configuration file to the /etc/prometheus directory **inside the container**
+- It means:
+  - run a container called **prometheus**
+  - We'll be using the host network, so we can connect to the node_exporter (that we'll run next)
+  - map the prometheus config file to the one on the host: **prometheus.yml*
 - use this image:  prom/prometheus (from dockerhub)
 
 If everything is OK, you can brose to localhost:9090
