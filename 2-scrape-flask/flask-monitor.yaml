@@ -6,6 +6,9 @@ metadata:
   labels:
     release: kube-stack # IMPORTANT: This must match your Helm release name
 spec:
+# This is the "Open Your Eyes" setting
+  namespaceSelector:
+    any: true
   selector:
     matchLabels:
       app: flask-app    # This must match your Service label
