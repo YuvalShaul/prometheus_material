@@ -10,5 +10,8 @@ docker push yuvalshaul/flask-app
 
 kubectl apply -f app-deployment.yaml
 kubectl apply -f app-service.yaml
+kubectl apply -f flask-monitor.yaml
+kubectl get deployments
+kubectl get services
 minikube -p four tunnel
 

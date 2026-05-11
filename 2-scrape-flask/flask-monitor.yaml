@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: flask-app-monitor
+  namespace: monitoring # Or wherever your Prometheus is
+  labels:
+    release: kube-stack # IMPORTANT: This must match your Helm release name
+spec:
+  selector:
+    matchLabels:
+      app: flask-app    # This must match your Service label
+  endpoints:
+  - port: web           # This must match the port NAME in your Service
+    path: /metrics
+    interval: 15s
