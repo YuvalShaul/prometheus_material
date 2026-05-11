@@ -1,4 +1,4 @@
-## Install Prometheus using Helm
+### Install Prometheus using Helm
 
 - Assunimg you have [Helm](https://helm.sh/) already installed:
 ```
@@ -14,21 +14,17 @@ helm repo update
   ```
   helm install kube-stack prometheus-community/kube-prometheus-stack --namespace monitoring
   ```
-  
 
 
-
-
-
-===============================================================================
-
+### Exposing Grafana using port-forward command
+- Using the [port-forward](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_port-forward/) command:
+```
 kubectl port-forward svc/kube-stack-grafana  3000:80 -n monitoring 
-
-
-
-http://localhost:3000
-
-Username: admin
-
-kubectl get secret -n monitoring kube-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
-Password: 
+```
+- Browse grafana:
+  - user name:
+  http://localhost:3000
+  - Get password using this command:
+  ```
+  kubectl get secret -n monitoring kube-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+  ```
