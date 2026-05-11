@@ -1,14 +1,20 @@
 ## Install Prometheus using Helm
 
-Assunimg you have [Helm](https://helm.sh/) already installed:
+- Assunimg you have [Helm](https://helm.sh/) already installed:
 ```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 ```
-
-
-kubectl create namespace monitoring
-helm install kube-stack prometheus-community/kube-prometheus-stack --namespace monitoring
+- Assuming **kubectl** is installed and points to a k8s cluster:
+  - Create a namespace for all Prometheus components:
+  ```
+  kubectl create namespace monitoring
+  ```
+  - Install Prometheus:
+  ```
+  helm install kube-stack prometheus-community/kube-prometheus-stack --namespace monitoring
+  ```
+  
 
 
 
