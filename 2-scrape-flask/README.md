@@ -90,3 +90,34 @@ Browse to `http://localhost:3000`. Get the admin password with:
 ```
 kubectl get secret -n monitoring kube-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
+
+---
+
+### Option A — Build a Dashboard Manually
+
+1. Click **+** (top-right) → **New dashboard** → **Add visualization**
+2. Select **Prometheus** as the data source
+3. In the **Metrics** field enter a query (see examples below) and click **Run query**
+4. Set a panel title, then click **Apply**
+5. Repeat for each panel, then click the **Save** icon (top-right) and give the dashboard a name
+
+Suggested panels:
+
+| Panel title | Query |
+|-------------|-------|
+| Order Rate by Category | `sum(rate(shop_orders_total[1m])) by (category)` |
+| Active Users | `shop_active_users` |
+| Payment Duration p95 | `histogram_quantile(0.95, rate(shop_payment_duration_seconds_bucket[5m]))` |
+| HTTP Request Rate | `sum(rate(flask_http_request_total[1m])) by (status)` |
+
+---
+
+### Option B — Import the Ready-Made Dashboard
+
+A pre-built dashboard with all four panels is provided in `flask-dashboard.json`.
+
+1. In Grafana click **+** → **Import dashboard**
+2. Click **Upload JSON file** and select `flask-dashboard.json`
+3. Select **Prometheus** as the data source and click **Import**
+
+The dashboard auto-refreshes every 10 seconds and shows the last 15 minutes of data.
