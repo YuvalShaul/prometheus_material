@@ -32,6 +32,34 @@ kubectl get secret -n monitoring kube-stack-grafana -o jsonpath="{.data.admin-pa
 - Your Flask app must use the `prometheus-flask-exporter` library to expose a `/metrics` route.
 - All required libraries are already in **requirements.txt**
 
+### Custom Metrics in `app.py`
+
+The app defines three custom Prometheus metrics on top of the automatic defaults:
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| `shop_orders_total` | Counter | Orders placed, labelled by `category` (electronics / clothing / food) |
+| `shop_active_users` | Gauge | Users currently logged in (increments on `/login`, decrements on `/logout`) |
+| `shop_payment_duration_seconds` | Histogram | Simulated payment processing time in seconds |
+
+### Routes to generate data
+
+| Route | What it does |
+|-------|-------------|
+| `GET /` | Health-check / welcome message |
+| `GET /buy/<category>` | Places an order, records payment duration |
+| `GET /login` | Increments active-user count |
+| `GET /logout` | Decrements active-user count |
+
+Example — generate some traffic after deploying:
+```bash
+# Replace <HOST> with the minikube service URL or localhost if port-forwarding
+curl http://<HOST>/buy/electronics
+curl http://<HOST>/buy/food
+curl http://<HOST>/login
+curl http://<HOST>/logout
+```
+
 ## 2. The Kubernetes Configuration
 
 The "Handshake" happens through three YAML files.
@@ -64,6 +92,14 @@ Open `http://localhost:9090` in your browser. Go to **Status -> Target Health**.
 
 In the Prometheus search bar, run:
 
-* `flask_http_request_total`: Shows raw request counts per pod.
-* `sum(flask_http_request_total) by (status)`: Aggregates requests by success/error code.
-* `rate(flask_http_request_total[1m])`: Shows current traffic "speed" (requests per second).
+**Built-in Flask metrics (from `prometheus-flask-exporter`):**
+* `flask_http_request_total` — raw request counts per pod
+* `sum(flask_http_request_total) by (status)` — aggregated by HTTP status code
+* `rate(flask_http_request_total[1m])` — requests per second (traffic speed)
+
+**Custom shop metrics:**
+* `shop_orders_total` — total orders placed
+* `sum(shop_orders_total) by (category)` — orders broken down by product category
+* `rate(shop_orders_total[1m])` — order rate per second
+* `shop_active_users` — currently logged-in users (live gauge)
+* `histogram_quantile(0.95, rate(shop_payment_duration_seconds_bucket[5m]))` — 95th-percentile payment processing time
