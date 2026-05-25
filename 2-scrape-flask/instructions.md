@@ -2,6 +2,31 @@
 
 This guide explains how to connect a Flask application to the **kube-prometheus-stack** using a **ServiceMonitor**.
 
+## 0. Prerequisites: Start Minikube and Install Prometheus
+
+- **Start Minikube:**
+An example with 3 nodes:
+```
+minikube start -p three -n 3
+```
+
+- **Install the kube-prometheus-stack Helm chart:**
+```
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+kubectl create namespace monitoring
+helm install kube-stack prometheus-community/kube-prometheus-stack --namespace monitoring
+```
+
+- **Access Grafana (optional):**
+```
+kubectl port-forward svc/kube-stack-grafana 3000:80 -n monitoring
+```
+Browse to `http://localhost:3000`. Get the admin password with:
+```
+kubectl get secret -n monitoring kube-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+```
+
 ## 1. The Application (Python)
 
 - Your Flask app must use the `prometheus-flask-exporter` library to expose a `/metrics` route.
